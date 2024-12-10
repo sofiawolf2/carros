@@ -2,73 +2,39 @@ package com.carros.api.carros;
 
 import com.carros.domain.Carro;
 import com.carros.domain.CarroService;
-import com.carros.domain.dto.CarroDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
-import java.util.List;
 import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/api/v1/carros")
 public class CarrosController {
+
     @Autowired
-    private CarroService service;
+    private CarroService servise; // não precisa mais criar um new objeto pq o @Autowired vai faer isso por si so
+    // isso é o conceito de DI = INJEÇÃO DE DEPENDENCIAS
 
-    @GetMapping()
-    public ResponseEntity get() {
-        List<CarroDTO> carros = service.getCarros();
-        return ResponseEntity.ok(carros);
+    @GetMapping
+    public Iterable<Carro> pocoto() {
+        return servise.getCarros();
+    }
+    // INTERABLE é uma interface que representa uma coleção que pode ser listada.
+    // permite acessar os elementos de uma coleção um a um sem expor a implementação interna deles
+
+    @GetMapping ("/{id}")
+    public Optional<Carro> get(@PathVariable("id") Long id){ return servise.getCarroById(id);}
+    // OPTIONAL também é uma interface. é uma classe conteiner que representa um valor que pode ou não estar presente
+    // é usado quando pode retornar null (o valor pode ou não existir)
+
+/*    @GetMapping("tipo/{tipo}")
+    public Iterable<Carro> get(@PathVariable("tipo") String tipo){return servise.getCarroByTipo(tipo);}*/
+
+    @PostMapping // se fizer um post no /api/v1/cavalos passando um JSON de cavalo como parametro, ele vai executar esse metodo:
+    public String post(@RequestBody Carro carro){//@RequestBody converte o JSON do cavalo para o objeto cavalo
+        // o JSON precisa ter os mesmos atributos do objeto para funcionar
+        return "Carro salvo" + servise.salvar(carro).getId();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity get(@PathVariable("id") Long id) {
-        CarroDTO carro = service.getCarroById(id);
-
-        return ResponseEntity.ok(carro);
-    }
-
-    @GetMapping("/tipo/{tipo}")
-    public ResponseEntity getCarrosByTipo(@PathVariable("tipo") String tipo) {
-        List<CarroDTO> carros = service.getCarrosByTipo(tipo);
-        return carros.isEmpty() ?
-                ResponseEntity.noContent().build() :
-                ResponseEntity.ok(carros);
-    }
-
-    @PostMapping
-    public ResponseEntity post(@RequestBody Carro carro) {
-
-        CarroDTO c = service.insert(carro);
-
-        URI location = getUri(c.getId());
-        return ResponseEntity.created(location).build();
-    }
-
-    private URI getUri(Long id) {
-        return ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(id).toUri();
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity put(@PathVariable("id") Long id, @RequestBody Carro carro) {
-
-        carro.setId(id);
-
-        CarroDTO c = service.update(carro, id);
-
-        return c != null ?
-                ResponseEntity.ok(c) :
-                ResponseEntity.notFound().build();
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable("id") Long id) {
-        service.delete(id);
-
-        return ResponseEntity.ok().build();
-    }
 }

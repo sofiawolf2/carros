@@ -1,64 +1,39 @@
 package com.carros.domain;
 
-import com.carros.domain.dto.CarroDTO;
-import com.carros.api.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class CarroService {
 
-    @Autowired
+    @Autowired // o spring vai injetar essa dependencia automaticamente. nao criaremos um new. p spring vai fazer
     private CarroRepository rep;
 
-    public List<CarroDTO> getCarros() {
-        List<CarroDTO> list = rep.findAll().stream().map(CarroDTO::create).collect(Collectors.toList());
-        return list;
+    public Iterable<Carro> getCarros(){
+        return rep.findAll();
+    } // esse metodo findall ja existe no crudRepositorio
+
+    public Optional<Carro> getCarroById(Long id){ return rep.findById(id);} // esse metodo findById ja existe no crudRepositorio
+    public Iterable<Carro> getCarroByTipo(String tipo){return rep.findByTipo(tipo);} // ele não existe no crudRepositorio. Vamos criar
+    public Carro salvar(Carro Carro) {return rep.save(Carro);} // save ja existe e retorna o objeto
+
+    public List<Carro> getCarrosfake(){
+        List<Carro> Carros = new ArrayList<Carro>();
+
+        //no momento os Carros serão add manualmente e futuramente no banco de dados
+        Carros.add(new Carro(1L,"Indomável")); //se não colocar o L ele entende como inteiro. isso é coisa do java
+        Carros.add(new Carro(2L, "Amendoin"));
+        Carros.add(new Carro(3L, "Viado"));
+
+
+        return Carros;
     }
 
-    public CarroDTO getCarroById(Long id) {
-        Optional<Carro> carro = rep.findById(id);
-        return carro.map(CarroDTO::create).orElseThrow(() -> new ObjectNotFoundException("Carro não encontrado"));
-    }
-
-    public List<CarroDTO> getCarrosByTipo(String tipo) {
-        return rep.findByTipo(tipo).stream().map(CarroDTO::create).collect(Collectors.toList());
-    }
-
-    public CarroDTO insert(Carro carro) {
-        Assert.isNull(carro.getId(),"Não foi possível inserir o registro");
-
-        return CarroDTO.create(rep.save(carro));
-    }
-
-    public CarroDTO update(Carro carro, Long id) {
-        Assert.notNull(id,"Não foi possível atualizar o registro");
-
-        // Busca o carro no banco de dados
-        Optional<Carro> optional = rep.findById(id);
-        if(optional.isPresent()) {
-            Carro db = optional.get();
-            // Copiar as propriedades
-            db.setNome(carro.getNome());
-            db.setTipo(carro.getTipo());
-            System.out.println("Carro id " + db.getId());
-
-            // Atualiza o carro
-            rep.save(db);
-
-            return CarroDTO.create(db);
-        } else {
-            return null;
-            //throw new RuntimeException("Não foi possível atualizar o registro");
-        }
-    }
-
-    public void delete(Long id) {
-        rep.deleteById(id);
+    public Iterable<Carro> getAll(){
+        return rep.findAll();
     }
 }

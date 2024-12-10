@@ -1,14 +1,16 @@
 package com.carros;
 
-import org.springframework.boot.SpringApplication;
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
+
+import static org.springframework.boot.SpringApplication.*;
+
 
 @SpringBootApplication
 public class CarrosApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(CarrosApplication.class, args);
+        run(CarrosApplication.class, args);
     }
 
 }
