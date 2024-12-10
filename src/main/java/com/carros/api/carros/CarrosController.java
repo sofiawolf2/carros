@@ -17,7 +17,7 @@ public class CarrosController {
     // isso é o conceito de DI = INJEÇÃO DE DEPENDENCIAS
 
     @GetMapping
-    public Iterable<Carro> pocoto() {
+    public Iterable<Carro> getListacarros() {
         return servise.getCarros();
     }
     // INTERABLE é uma interface que representa uma coleção que pode ser listada.
