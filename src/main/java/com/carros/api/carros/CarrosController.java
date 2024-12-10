@@ -34,7 +34,7 @@ public class CarrosController {
     @PostMapping // se fizer um post no /api/v1/cavalos passando um JSON de cavalo como parametro, ele vai executar esse metodo:
     public String post(@RequestBody Carro carro){//@RequestBody converte o JSON do cavalo para o objeto cavalo
         // o JSON precisa ter os mesmos atributos do objeto para funcionar
-        return "Carro salvo" + servise.salvar(carro).getId();
+        return "Carro salvo " + servise.salvar(carro).getId();
     }
 
 }

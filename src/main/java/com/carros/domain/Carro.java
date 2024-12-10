@@ -27,7 +27,7 @@ public class Carro {
         this.nome = nome;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
