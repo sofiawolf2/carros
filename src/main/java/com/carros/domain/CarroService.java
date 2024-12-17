@@ -19,7 +19,7 @@ public class CarroService {
     } // esse metodo findall ja existe no crudRepositorio
 
     public Optional<Carro> getCarroById(Long id){ return rep.findById(id);} // esse metodo findById ja existe no crudRepositorio
-    public Iterable<Carro> getCarroByTipo(String tipo){return rep.findByTipo(tipo);} // ele não existe no crudRepositorio. Vamos criar
+   // public Iterable<Carro> getCarroByTipo(String tipo){return rep.findByTipo(tipo);} // ele não existe no crudRepositorio. Vamos criar
     public Carro salvar(Carro Carro) {return rep.save(Carro);} // save ja existe e retorna o objeto
     public Carro update(Carro carro, Long id){
         Assert.notNull(id,"ID inválido. Não foi possivel atualizar o registro"); // verifica se o id é nulo
@@ -28,7 +28,7 @@ public class CarroService {
         if (desatualizado.isPresent()){ // verifica se o carro existe
             Carro novoValor = desatualizado.get(); // retorna o carro, é uma função do optional
             novoValor.setNome(carro.getNome());
-            novoValor.setTipo(carro.getTipo());
+           // novoValor.setTipo(carro.getTipo());
 
             rep.save(novoValor); //não é recomendavel salvar direto sem fazer esse processo pois nesses sistemas é comum objetos terem relacionamentos então se apagar e salvar por cima vai perder essas caracteristicas
             return novoValor;
