@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-
 @RestController
 @RequestMapping("/api/v1/carros")
 public class CarrosController {
@@ -28,13 +27,19 @@ public class CarrosController {
     // OPTIONAL também é uma interface. é uma classe conteiner que representa um valor que pode ou não estar presente
     // é usado quando pode retornar null (o valor pode ou não existir)
 
-/*    @GetMapping("tipo/{tipo}")
-    public Iterable<Carro> get(@PathVariable("tipo") String tipo){return servise.getCarroByTipo(tipo);}*/
+//  @GetMapping("tipo/{tipo}")
+//  public Iterable<Carro> get(@PathVariable("tipo") String tipo){return servise.getCarroByTipo(tipo);}
 
     @PostMapping // se fizer um post no /api/v1/cavalos passando um JSON de cavalo como parametro, ele vai executar esse metodo:
     public String post(@RequestBody Carro carro){//@RequestBody converte o JSON do cavalo para o objeto cavalo
         // o JSON precisa ter os mesmos atributos do objeto para funcionar
         return "Carro salvo " + servise.salvar(carro).getId();
     }
+
+    @PutMapping("/{id}")
+    public String put(@PathVariable("id") Long id, @RequestBody Carro carro){
+        return "Carro atualizado com sucesso de id: " + servise.update(carro, id).getId();
+    }
+
 
 }
