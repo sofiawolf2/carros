@@ -19,12 +19,34 @@ public class CarrosController {
 
     @GetMapping // esse metodo não precisaria da aplicação dos status de retorno do http pois ele deve voltar 200 que é o numero padrão mas faremos o codigo em todos
     public ResponseEntity<Iterable<Carro>> getListacarros() {
-        return new ResponseEntity<>(servise.getCarros(), HttpStatus.OK); // aqui vai chavar o servise que precisamos e caso finalizado retorna o status correspoendente do comando http (200)
+       //return new ResponseEntity<>(servise.getCarros(), HttpStatus.OK);
+        // aqui vai chavar o servise que precisamos e caso finalizado retorna o status correspoendente do comando http (200)
+        // o responseEntity recebe o objeto que vai retornar como JSON
+
+        return ResponseEntity.ok(servise.getCarros()); // isso é outra maneira de fazer a linha 22. é um atalho
     }
 
 
     @GetMapping ("/{id}")
-    public Optional<Carro> get(@PathVariable("id") Long id){ return servise.getCarroById(id);}
+    public ResponseEntity get(@PathVariable("id") Long id){ //aqui não colocamos que o ResponseEntity é do tipo Optional<Carro> pois pode ser que não retorne um carro. Pode ser que retorne apenas um erro. No caso um Renponse Entity
+        Optional<Carro> carro = servise.getCarroById(id);
+        if (carro.isPresent()){
+            return ResponseEntity.ok(carro.get()); // o paratro poderia ser direto servise.getCarroById(id) mas separamos para poder verificar antes se existe. Pois o Optional aceita null
+        }else{
+            return ResponseEntity.notFound().build(); // no caso de ok tambem deveriamos colocar o .build() mas como estamos colocando um parametro dentro, não precisa
+        }// no caso de notFound não queremos que retorne nem sequer null. deve retornar nada e um erro. apenas. 404
+    }
+    /* podemos simplificar o codigo usando a versão reduzida do if else (com operadores ternarios):
+    return condição?
+        returno caso sim:
+        retorno caso não
+
+     Usando outra forma:
+     return carro
+             .map(ResponseEntity::ok) // aqui estou passando o objeto carro como parametro dentro do ResponseEntity.ok caso não fosse o proprio objeto teria que usar essa estrutura carro.map(c -> ResponseEntity.ok(c))
+             .orElse(ResponseEntity.notFound().build());
+             // no .map ele ja faz a verificação se existe
+     */
 
 
 
