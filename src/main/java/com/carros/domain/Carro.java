@@ -16,7 +16,7 @@ public class Carro {
     private Long id;
     // se o atributo fosse diferente o nome teriamos q colocar isso @Colum(name = "nome")
     private String nome;
-   // private String tipo;
+    private String tipo;
 
 
     public Carro() {

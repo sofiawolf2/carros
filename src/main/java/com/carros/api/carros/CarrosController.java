@@ -5,8 +5,10 @@ import com.carros.domain.CarroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -27,7 +29,7 @@ public class CarrosController {
     }
 
 
-    @GetMapping ("/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable("id") Long id){ //aqui não colocamos que o ResponseEntity é do tipo Optional<Carro> pois pode ser que não retorne um carro. Pode ser que retorne apenas um erro. No caso um Renponse Entity
         Optional<Carro> carro = servise.getCarroById(id);
         if (carro.isPresent()){
@@ -47,6 +49,15 @@ public class CarrosController {
              .orElse(ResponseEntity.notFound().build());
              // no .map ele ja faz a verificação se existe
      */
+
+    @GetMapping("/tipo/{tipo}")// apesar de @GetMapping("/{id}") e esse @GetMapping ter parametros diferentes, o sprint boot ve da mesma forma. por isso devemos separar os url de cada um
+    public ResponseEntity getCarrosByTipo(@PathVariable("tipo") String tipo){ //usando responseEntity sem tipo pois pode ser que retorne apenas um erro
+        List<Carro> carros = servise.getCarrosByTipo(tipo);
+       // se tivessimos um metodo que retorna os tipos existentes poderiamos verficar se o tipo existe
+        return carros.isEmpty()?
+                ResponseEntity.noContent().build() : ResponseEntity.ok(carros); // se não estiver vazio ele retorna os carros
+    }
+
 
 
 

@@ -17,6 +17,9 @@ public class CarroService {
     public Iterable<Carro> getCarros(){
         return rep.findAll();
     } // esse metodo findall ja existe no crudRepositorio
+    public List<Carro> getCarrosByTipo(String tipo){
+        return rep.findByTipo(tipo);
+    }
 
     public Optional<Carro> getCarroById(Long id){ return rep.findById(id);} // esse metodo findById ja existe no crudRepositorio
    // public Iterable<Carro> getCarroByTipo(String tipo){return rep.findByTipo(tipo);} // ele não existe no crudRepositorio. Vamos criar
@@ -45,19 +48,6 @@ public class CarroService {
         }
     }
 
-
-
-    public List<Carro> getCarrosfake(){
-        List<Carro> Carros = new ArrayList<Carro>();
-
-        //no momento os Carros serão add manualmente e futuramente no banco de dados
-        Carros.add(new Carro(1L,"Indomável")); //se não colocar o L ele entende como inteiro. isso é coisa do java
-        Carros.add(new Carro(2L, "Amendoin"));
-        Carros.add(new Carro(3L, "Viado"));
-
-
-        return Carros;
-    }
 
     public Iterable<Carro> getAll(){
         return rep.findAll();
