@@ -36,6 +36,15 @@ public class CarroService {
 
         }
     }
+    public void delete(Long id){
+        Optional<Carro> carro = getCarroById(id);
+        if (carro.isPresent()){
+            rep.deleteById(id); // esse metodo ja existe no repositorio
+        }else{
+            throw new RuntimeException("Carro não existe");
+        }
+    }
+
 
 
     public List<Carro> getCarrosfake(){
