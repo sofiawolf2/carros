@@ -2,6 +2,7 @@ package com.carros.api.carros;
 
 import com.carros.domain.Carro;
 import com.carros.domain.CarroService;
+import com.carros.domain.dto.CarroDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,13 +20,9 @@ public class CarrosController {
     private CarroService servise; // não precisa mais criar um new objeto pq o @Autowired vai faer isso por si so
     // isso é o conceito de DI = INJEÇÃO DE DEPENDENCIAS
 
-    @GetMapping // esse metodo não precisaria da aplicação dos status de retorno do http pois ele deve voltar 200 que é o numero padrão mas faremos o codigo em todos
-    public ResponseEntity<Iterable<Carro>> getListacarros() {
-       //return new ResponseEntity<>(servise.getCarros(), HttpStatus.OK);
-        // aqui vai chavar o servise que precisamos e caso finalizado retorna o status correspoendente do comando http (200)
-        // o responseEntity recebe o objeto que vai retornar como JSON
-
-        return ResponseEntity.ok(servise.getCarros()); // isso é outra maneira de fazer a linha 22. é um atalho
+    @GetMapping
+    public ResponseEntity<List<CarroDTO>> getListacarros() {
+        return ResponseEntity.ok(servise.getCarros());
     }
 
 
@@ -38,24 +35,12 @@ public class CarrosController {
             return ResponseEntity.notFound().build(); // no caso de ok tambem deveriamos colocar o .build() mas como estamos colocando um parametro dentro, não precisa
         }// no caso de notFound não queremos que retorne nem sequer null. deve retornar nada e um erro. apenas. 404
     }
-    /* podemos simplificar o codigo usando a versão reduzida do if else (com operadores ternarios):
-    return condição?
-        returno caso sim:
-        retorno caso não
 
-     Usando outra forma:
-     return carro
-             .map(ResponseEntity::ok) // aqui estou passando o objeto carro como parametro dentro do ResponseEntity.ok caso não fosse o proprio objeto teria que usar essa estrutura carro.map(c -> ResponseEntity.ok(c))
-             .orElse(ResponseEntity.notFound().build());
-             // no .map ele ja faz a verificação se existe
-     */
-
-    @GetMapping("/tipo/{tipo}")// apesar de @GetMapping("/{id}") e esse @GetMapping ter parametros diferentes, o sprint boot ve da mesma forma. por isso devemos separar os url de cada um
-    public ResponseEntity getCarrosByTipo(@PathVariable("tipo") String tipo){ //usando responseEntity sem tipo pois pode ser que retorne apenas um erro
-        List<Carro> carros = servise.getCarrosByTipo(tipo);
-       // se tivessimos um metodo que retorna os tipos existentes poderiamos verficar se o tipo existe
+    @GetMapping("/tipo/{tipo}")
+    public ResponseEntity <List<CarroDTO>> getCarrosByTipo(@PathVariable("tipo") String tipo){
+        List<CarroDTO> carros = servise.getCarrosByTipo(tipo);
         return carros.isEmpty()?
-                ResponseEntity.noContent().build() : ResponseEntity.ok(carros); // se não estiver vazio ele retorna os carros
+                ResponseEntity.noContent().build() : ResponseEntity.ok(carros);
     }
 
 

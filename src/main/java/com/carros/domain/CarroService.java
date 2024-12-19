@@ -1,5 +1,6 @@
 package com.carros.domain;
 
+import com.carros.domain.dto.CarroDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -7,6 +8,7 @@ import org.springframework.util.Assert;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CarroService {
@@ -14,9 +16,14 @@ public class CarroService {
     @Autowired // o spring vai injetar essa dependencia automaticamente. nao criaremos um new. p spring vai fazer
     private CarroRepository rep;
 
-    public Iterable<Carro> getCarros(){
-        return rep.findAll();
-    } // esse metodo findall ja existe no crudRepositorio
+    public Iterable<CarroDTO> getCarros(){
+        List<Carro> c = rep.findAll(); // agr que trocamos para JpaRepository, esse metodo retorna uma lista
+        //Se fossemos fazer a lista de CarroDTO manualmente, teria que criar uma lista carroDTO e depois temos que usar um for
+        //para percorre toda uma lista, criando um objeto por vez novo
+        List<CarroDTO> cdto = c.stream().map(CarroDTO::new).collect(Collectors.toList());// ele criar e retornar uma lista contendo carrosdto com os parametros de c
+        // (a -> new CarroDTO(a)) como estamos pegando a, que é o carro, e passando ele como parametro podemos fazer a versão resumida acima
+        return cdto;
+    }
     public List<Carro> getCarrosByTipo(String tipo){
         return rep.findByTipo(tipo);
     }

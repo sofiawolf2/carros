@@ -13,9 +13,8 @@ public class Carro {
 
     @Id //indicando que esse atributo é o da chave primaria do bd
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    // ao salvar um nosso cavalo a jpa vai fazer o auto incremento do id atravez de uma chave primaria
+    // ao salvar um nosso carro a jpa vai fazer o auto incremento do id atravez de uma chave primaria
     private Long id;
-    // se o atributo fosse diferente o nome teriamos q colocar isso @Colum(name = "nome")
     private String nome;
     private String tipo;
 
