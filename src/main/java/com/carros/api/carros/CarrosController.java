@@ -17,18 +17,17 @@ import java.util.Optional;
 public class CarrosController {
 
     @Autowired
-    private CarroService servise; // não precisa mais criar um new objeto pq o @Autowired vai faer isso por si so
-    // isso é o conceito de DI = INJEÇÃO DE DEPENDENCIAS
+    private CarroService servise;
 
     @GetMapping
-    public ResponseEntity<List<CarroDTO>> getListacarros() {
+    public ResponseEntity getListaCarros() {// TIPAGEM DE RESPONSEENTITY: na vdd o responseentity é do tipo generico, ou seja ele aceita qualquer tipo. Estavamos especificando antes mais para verificar se o metodo esta funcionando e retornando corretamente. Agora não precisa mais
         return ResponseEntity.ok(servise.getCarros());
     }
 
 
     @GetMapping("/{id}")
-    public ResponseEntity get(@PathVariable("id") Long id){ //aqui não colocamos que o ResponseEntity é do tipo Optional<Carro> pois pode ser que não retorne um carro. Pode ser que retorne apenas um erro. No caso um Renponse Entity
-        Optional<Carro> carro = servise.getCarroById(id);
+    public ResponseEntity getById(@PathVariable("id") Long id){ //aqui não colocamos que o ResponseEntity é do tipo Optional<Carro> pois pode ser que não retorne um carro. Pode ser que retorne apenas um erro. No caso um Renponse Entity
+        Optional<CarroDTO> carro = servise.getCarroById(id);
         if (carro.isPresent()){
             return ResponseEntity.ok(carro.get()); // o paratro poderia ser direto servise.getCarroById(id) mas separamos para poder verificar antes se existe. Pois o Optional aceita null
         }else{
@@ -37,7 +36,7 @@ public class CarrosController {
     }
 
     @GetMapping("/tipo/{tipo}")
-    public ResponseEntity <List<CarroDTO>> getCarrosByTipo(@PathVariable("tipo") String tipo){
+    public ResponseEntity getCarrosByTipo(@PathVariable("tipo") String tipo){
         List<CarroDTO> carros = servise.getCarrosByTipo(tipo);
         return carros.isEmpty()?
                 ResponseEntity.noContent().build() : ResponseEntity.ok(carros);
@@ -52,10 +51,12 @@ public class CarrosController {
         return "Carro salvo " + servise.salvar(carro).getId();
     }
 
+    /*
     @PutMapping("/{id}")
     public String put(@PathVariable("id") Long id, @RequestBody Carro carro){
         return "Carro atualizado com sucesso de id: " + servise.update(carro, id).getId();
     }
+    */
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") Long id){

@@ -16,20 +16,25 @@ public class CarroService {
     @Autowired // o spring vai injetar essa dependencia automaticamente. nao criaremos um new. p spring vai fazer
     private CarroRepository rep;
 
-    public Iterable<CarroDTO> getCarros(){
+    public List<CarroDTO> getCarros(){
        return rep.findAll().stream().map(CarroDTO::new).collect(Collectors.toList());
     }
-    public List<Carro> getCarrosByTipo(String tipo){
-        return rep.findByTipo(tipo);
+    public List<CarroDTO> getCarrosByTipo(String tipo){
+        return rep.findByTipo(tipo).stream().map(CarroDTO::new).collect(Collectors.toList());
     }
 
-    public Optional<Carro> getCarroById(Long id){ return rep.findById(id);} // esse metodo findById ja existe no crudRepositorio
-   // public Iterable<Carro> getCarroByTipo(String tipo){return rep.findByTipo(tipo);} // ele não existe no crudRepositorio. Vamos criar
+    public Optional<CarroDTO> getCarroById(Long id){
+        return rep.findById(id).map(CarroDTO::new);//esse ultimo comando faz a conversão do Carro (que retorna do rep.findById) para CarroDTO
+    }
+
     public Carro salvar(Carro Carro) {return rep.save(Carro);} // save ja existe e retorna o objeto
+
+    /*
+
     public Carro update(Carro carro, Long id){
         Assert.notNull(id,"ID inválido. Não foi possivel atualizar o registro"); // verifica se o id é nulo
 
-        Optional<Carro> desatualizado = getCarroById(id); // estou pegando o carro que quero modificar
+        Optional<Carro> desatualizado = new Carro(getCarroById(id)); // estou pegando o carro que quero modificar
         if (desatualizado.isPresent()){ // verifica se o carro existe
             Carro novoValor = desatualizado.get(); // retorna o carro, é uma função do optional
             novoValor.setNome(carro.getNome());
@@ -41,9 +46,10 @@ public class CarroService {
 
         }
     }
+     */
+
     public void delete(Long id){
-        Optional<Carro> carro = getCarroById(id);
-        if (carro.isPresent()){
+        if (getCarroById(id).isPresent()){
             rep.deleteById(id); // esse metodo ja existe no repositorio
         }else{
             throw new RuntimeException("Carro não existe");
@@ -51,7 +57,4 @@ public class CarroService {
     }
 
 
-    public Iterable<Carro> getAll(){
-        return rep.findAll();
-    }
 }
