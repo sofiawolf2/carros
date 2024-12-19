@@ -17,12 +17,7 @@ public class CarroService {
     private CarroRepository rep;
 
     public Iterable<CarroDTO> getCarros(){
-        List<Carro> c = rep.findAll(); // agr que trocamos para JpaRepository, esse metodo retorna uma lista
-        //Se fossemos fazer a lista de CarroDTO manualmente, teria que criar uma lista carroDTO e depois temos que usar um for
-        //para percorre toda uma lista, criando um objeto por vez novo
-        List<CarroDTO> cdto = c.stream().map(CarroDTO::new).collect(Collectors.toList());// ele criar e retornar uma lista contendo carrosdto com os parametros de c
-        // (a -> new CarroDTO(a)) como estamos pegando a, que é o carro, e passando ele como parametro podemos fazer a versão resumida acima
-        return cdto;
+       return rep.findAll().stream().map(CarroDTO::new).collect(Collectors.toList());
     }
     public List<Carro> getCarrosByTipo(String tipo){
         return rep.findByTipo(tipo);
