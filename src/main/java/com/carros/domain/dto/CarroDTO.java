@@ -4,6 +4,7 @@ package com.carros.domain.dto;
 // o DTO vai ser quem define quais atributos queremos mostrar
 import com.carros.domain.Carro;
 import lombok.Data;
+import org.modelmapper.ModelMapper; //Ajuda a copiar os atributos de um objeto para outro
 
 @Data
 public class CarroDTO {
@@ -16,5 +17,11 @@ public class CarroDTO {
         this.nome = c.getNome();
         this.tipo = c.getTipo();
     }
+
+    public static CarroDTO create(Carro c){
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(c, CarroDTO.class); // precisa apenas que os atributos sejam iguais
+    }
+
 
 }

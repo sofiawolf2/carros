@@ -52,6 +52,12 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency> <!-- MODEL MAPPER-->
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+
 
     </dependencies>
 
