@@ -1,11 +1,11 @@
 package com.carros.domain;
 
 import com.carros.domain.dto.CarroDTO;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -14,20 +14,21 @@ import java.util.stream.Collectors;
 public class CarroService {
 
     @Autowired // o spring vai injetar essa dependencia automaticamente. nao criaremos um new. p spring vai fazer
-    private CarroRepository rep;
+    private CarroRepository carroRepository;
 
     public List<CarroDTO> getCarros(){
-       return rep.findAll().stream().map(CarroDTO::create).collect(Collectors.toList());// ele chama a função create da classe CarroDTO
+    //    return Collections.singletonList(new ModelMapper().map(carroRepository.findAll(), CarroDTO.class)); //outra forma de fazer
+       return carroRepository.findAll().stream().map(CarroDTO::create).collect(Collectors.toList());// ele chama a função create da classe CarroDTO
     }
     public List<CarroDTO> getCarrosByTipo(String tipo){
-        return rep.findByTipo(tipo).stream().map(CarroDTO::create).collect(Collectors.toList());
+        return carroRepository.findByTipo(tipo).stream().map(CarroDTO::create).collect(Collectors.toList());
     }
 
     public Optional<CarroDTO> getCarroById(Long id){
-        return rep.findById(id).map(CarroDTO::new);//esse ultimo comando faz a conversão do Carro (que retorna do rep.findById) para CarroDTO
+        return carroRepository.findById(id).map(CarroDTO::create);//esse ultimo comando faz a conversão do Carro (que retorna do rep.findById) para CarroDTO
     }
 
-    public Carro salvar(Carro Carro) {return rep.save(Carro);} // save ja existe e retorna o objeto
+    public Carro salvar(Carro Carro) {return carroRepository.save(Carro);} // save ja existe e retorna o objeto
 
     /*
 
@@ -50,11 +51,14 @@ public class CarroService {
 
     public void delete(Long id){
         if (getCarroById(id).isPresent()){
-            rep.deleteById(id); // esse metodo ja existe no repositorio
+            carroRepository.deleteById(id); // esse metodo ja existe no repositorio
         }else{
             throw new RuntimeException("Carro não existe");
         }
     }
 
 
+    public List<Carro> testeCarros() {
+        return carroRepository.findAll();
+    }
 }
