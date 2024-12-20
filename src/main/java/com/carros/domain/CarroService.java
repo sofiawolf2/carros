@@ -2,6 +2,7 @@ package com.carros.domain;
 
 import com.carros.domain.dto.CarroDTO;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.internal.util.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,6 @@ public class CarroService {
     private CarroRepository carroRepository;
 
     public List<CarroDTO> getCarros(){
-    //    return Collections.singletonList(new ModelMapper().map(carroRepository.findAll(), CarroDTO.class)); //outra forma de fazer
        return carroRepository.findAll().stream().map(CarroDTO::create).collect(Collectors.toList());// ele chama a função create da classe CarroDTO
     }
     public List<CarroDTO> getCarrosByTipo(String tipo){
@@ -28,33 +28,31 @@ public class CarroService {
         return carroRepository.findById(id).map(CarroDTO::create);//esse ultimo comando faz a conversão do Carro (que retorna do rep.findById) para CarroDTO
     }
 
-    public Carro salvar(Carro Carro) {return carroRepository.save(Carro);} // save ja existe e retorna o objeto
+    public CarroDTO insert(Carro carro) {
+        Assert.isNull(carro.getId(), "Não foi possivel atualizar o registro");
+        return CarroDTO.create(carroRepository.save(carro));
+    } // save ja existe e retorna o objeto
 
-    /*
 
-    public Carro update(Carro carro, Long id){
+    public CarroDTO update(Carro carro, Long id){
         Assert.notNull(id,"ID inválido. Não foi possivel atualizar o registro"); // verifica se o id é nulo
-
-        Optional<Carro> desatualizado = new Carro(getCarroById(id)); // estou pegando o carro que quero modificar
+        Optional<Carro> desatualizado = carroRepository.findById(id);; // estou pegando o carro que quero modificar
         if (desatualizado.isPresent()){ // verifica se o carro existe
             Carro novoValor = desatualizado.get(); // retorna o carro, é uma função do optional
             novoValor.setNome(carro.getNome());
            // novoValor.setTipo(carro.getTipo());
 
-            rep.save(novoValor); //não é recomendavel salvar direto sem fazer esse processo pois nesses sistemas é comum objetos terem relacionamentos então se apagar e salvar por cima vai perder essas caracteristicas
-            return novoValor;
-        }else{throw new RuntimeException("Carro não existe. Não foi possivel atualizar o registro");
-
-        }
+            carroRepository.save(novoValor); //não é recomendavel salvar direto sem fazer esse processo pois nesses sistemas é comum objetos terem relacionamentos então se apagar e salvar por cima vai perder essas caracteristicas
+            return CarroDTO.create(novoValor);
+        }else{ return null;}
     }
-     */
 
-    public void delete(Long id){
+    public boolean delete(Long id){
         if (getCarroById(id).isPresent()){
             carroRepository.deleteById(id); // esse metodo ja existe no repositorio
-        }else{
-            throw new RuntimeException("Carro não existe");
+            return true;
         }
+        return false;
     }
 
 

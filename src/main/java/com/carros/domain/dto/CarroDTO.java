@@ -13,7 +13,7 @@ public class CarroDTO {
     private String nome;
     private String tipo;
 
-    public static CarroDTO create(Carro c) {
+    public static CarroDTO create(Carro c) {// transforma um Carro num CarroDTO e retorna ele
         ModelMapper modelMapper = new ModelMapper();
         return modelMapper.map(c, CarroDTO.class); // precisa apenas que os atributos sejam iguais
     }

@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,8 +20,6 @@ public class CarrosController {
 
     @Autowired
     private CarroService carroService;
-
-    
 
     @GetMapping
     public ResponseEntity getListaCarros() {// TIPAGEM DE RESPONSEENTITY: na vdd o responseentity é do tipo generico, ou seja ele aceita qualquer tipo. Estavamos especificando antes mais para verificar se o metodo esta funcionando e retornando corretamente. Agora não precisa mais
@@ -50,25 +50,43 @@ public class CarrosController {
     }
 
 
-
-
-    @PostMapping // se fizer um post no /api/v1/cavalos passando um JSON de cavalo como parametro, ele vai executar esse metodo:
-    public String post(@RequestBody Carro carro){//@RequestBody converte o JSON do cavalo para o objeto cavalo
-        // o JSON precisa ter os mesmos atributos do objeto para funcionar
-        return "Carro salvo " + carroService.salvar(carro).getId();
+    @PostMapping
+    public ResponseEntity post(@RequestBody Carro carro){//@RequestBody converte o JSON do cavalo para o objeto carro
+        try{
+            carroService.insert(carro);
+            URI location = geturi(carro.getId());
+            return ResponseEntity.created(location).build(); // http status 201. Indica que um novo recurso foi criado com sucesso (nova localização é a prova)
+            // não é obrigatorio inserir a nova localizao, pode so colocar um null
+        }catch (Exception e){
+            return ResponseEntity.badRequest().build();// http status 400
+            //indica que a requisição não foi processada devido a um problema, como um objeto malformado ou uma falha na persistência
+        }
     }
 
-    /*
+    private URI geturi (Long id){
+        return ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri();
+        /* EXPLICAÇÃO DO COMANDO-----
+         ServletUriComponentsBuilder.fromCurrentRequest(): cria um objeto ServletUriComponentsBuilder que inicia a construção da URI baseada na requisição atual
+         ou seja: ele vai pegar o endereço atual (http://localhost:8080/api/vi/carros) para se basear e contruir a URI do id indicado
+         .path("/{id}"): esse metodo define um caminho que será adicionado à URI que estamos criando. no caso vai ser add /algo. no caso o algo é o id
+         .buildAndExpand(id): constroi a URI final, substituindo o {id} pelo valor do id
+         .toUri(): converte a construção atual (que é uma instancia de UriComponents) em um objeto URI.
+         */
+    }
+
+
     @PutMapping("/{id}")
-    public String put(@PathVariable("id") Long id, @RequestBody Carro carro){
-        return "Carro atualizado com sucesso de id: " + carroService.update(carro, id).getId();
+    public ResponseEntity put(@PathVariable("id") Long id, @RequestBody Carro carro){
+        CarroDTO c = carroService.update(carro, id);
+        return  c != null? // se o carro existe
+                ResponseEntity.ok(c) : ResponseEntity.notFound().build();
+
     }
-    */
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") Long id){
-        carroService.delete(id);
-        return "Carro deletado com sucesso id: " + id;
+    public ResponseEntity delete(@PathVariable("id") Long id){
+        return carroService.delete(id)?
+                ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
 
