@@ -1,9 +1,13 @@
 package com.carros.api.carros;
 
+import com.carros.CarrosApplication;
 import com.carros.domain.Carro;
 import com.carros.domain.CarroService;
 import com.carros.domain.dto.CarroDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
@@ -19,72 +23,23 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
-@RequestMapping("/api/v1/carros")
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = CarrosApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT) // web etc: da definindo que a porta de entrada é aleatoria
+//CarrosApplication.class : idefine a classe que vai ser usada no teste
+
 public class CarroAPITest {
 
     @Autowired
-    private CarroService carroService;
+    protected TestRestTemplate rest;
 
-    @GetMapping
-    public ResponseEntity getListaCarros() {
-        return ResponseEntity.ok(carroService.getCarros());
+    private ResponseEntity<CarroDTO> getCarro(String url){
+        return rest.getForEntity(url, CarroDTO.class); // realiza uma solicitação http atravez de uma url e o tipo da classe usada
     }
 
-    @GetMapping("teste")
-    public List<Carro> testeCarros(){
-        return carroService.testeCarros();
+    private ResponseEntity<List<CarroDTO>> getListaCarros( String url){
+        return rest.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<CarroDTO>>() {// exchange: como o outro mas mais flexivel, tem mais variedade de entradas
+        });
+// ParameterizedTypeReference : aceita genericos, como List e Map
     }
-
-
-    @GetMapping("/{id}")
-    public ResponseEntity getById(@PathVariable("id") Long id){
-        Optional<CarroDTO> carro = carroService.getCarroById(id);
-        if (carro.isPresent()){
-            return ResponseEntity.ok(carro.get());
-        }else{
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @GetMapping("/tipo/{tipo}")
-    public ResponseEntity getCarrosByTipo(@PathVariable("tipo") String tipo){
-        List<CarroDTO> carros = carroService.getCarrosByTipo(tipo);
-        return carros.isEmpty()?
-                ResponseEntity.noContent().build() : ResponseEntity.ok(carros);
-    }
-
-
-    @PostMapping
-    public ResponseEntity post(@RequestBody Carro carro){
-        try{
-            carroService.insert(carro);
-            URI location = geturi(carro.getId());
-            return ResponseEntity.created(location).build();
-        }catch (Exception e){
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
-    private URI geturi (Long id){
-        return ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri();
-
-    }
-
-
-    @PutMapping("/{id}")
-    public ResponseEntity put(@PathVariable("id") Long id, @RequestBody Carro carro){
-        CarroDTO c = carroService.update(carro, id);
-        return  c != null? 
-                ResponseEntity.ok(c) : ResponseEntity.notFound().build();
-
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable("id") Long id){
-        return carroService.delete(id)?
-                ResponseEntity.ok().build() : ResponseEntity.notFound().build();
-    }
-
-
 }
+
