@@ -92,7 +92,7 @@ public class CarroAPITest {
         rest.delete(location);
 
         //verificar se deletou
-        assertEquals(HttpStatus.NO_CONTENT, getCarro(location).getStatusCode());
+        assertEquals(HttpStatus.NOT_FOUND, getCarro(location).getStatusCode());
     }
 
 }
