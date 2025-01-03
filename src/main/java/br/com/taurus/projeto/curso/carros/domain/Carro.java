@@ -1,4 +1,4 @@
-package com.carros.domain;
+package br.com.taurus.projeto.curso.carros.domain;
 
 import lombok.*;
 //O Lombok vai gerar os getters e setters (entre outros metodos inclusive construtores vazios ou não mas nao usaremos contrutores) automaticamente agora

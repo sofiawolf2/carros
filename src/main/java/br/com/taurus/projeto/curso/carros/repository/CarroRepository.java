@@ -1,6 +1,7 @@
-package com.carros.domain;
+package br.com.taurus.projeto.curso.carros.repository;
 
 
+import br.com.taurus.projeto.curso.carros.domain.Carro;
 import org.springframework.data.jpa.repository.JpaRepository; // é filho do CrudRepository
 //import org.springframework.data.repository.CrudRepository;
 

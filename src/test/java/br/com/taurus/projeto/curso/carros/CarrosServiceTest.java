@@ -1,8 +1,8 @@
-package com.carros;
+package br.com.taurus.projeto.curso.carros;
 
-import com.carros.domain.Carro;
-import com.carros.domain.CarroService;
-import com.carros.domain.dto.CarroDTO;
+import br.com.taurus.projeto.curso.carros.domain.Carro;
+import br.com.taurus.projeto.curso.carros.service.CarroService;
+import br.com.taurus.projeto.curso.carros.domain.CarroDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

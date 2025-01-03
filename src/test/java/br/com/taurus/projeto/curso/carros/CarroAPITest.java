@@ -1,7 +1,7 @@
-package com.carros;
+package br.com.taurus.projeto.curso.carros;
 
-import com.carros.domain.Carro;
-import com.carros.domain.dto.CarroDTO;
+import br.com.taurus.projeto.curso.carros.domain.Carro;
+import br.com.taurus.projeto.curso.carros.domain.CarroDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;

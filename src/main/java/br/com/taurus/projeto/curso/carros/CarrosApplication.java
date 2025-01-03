@@ -1,4 +1,4 @@
-package com.carros;
+package br.com.taurus.projeto.curso.carros;
 
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
