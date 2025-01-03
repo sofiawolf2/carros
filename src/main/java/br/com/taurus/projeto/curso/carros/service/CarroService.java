@@ -47,12 +47,8 @@ public class CarroService {
         }else{ return null;}
     }
 
-    public boolean delete(Long id){
-        if (getCarroById(id).isPresent()){
-            carroRepository.deleteById(id); // esse metodo ja existe no repositorio
-            return true;
-        }
-        return false;
+    public void delete(Long id){
+        carroRepository.deleteById(id);
     }
 
 
