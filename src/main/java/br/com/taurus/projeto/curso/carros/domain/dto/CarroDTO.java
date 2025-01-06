@@ -1,8 +1,9 @@
-package br.com.taurus.projeto.curso.carros.domain;
+package br.com.taurus.projeto.curso.carros.domain.dto;
 //Data Transfer Object-> vamos usar um dto para definir quais atributos do objeto queremos mostrar. imagine um objeto com
 // 100 atributos e toda vez que fossemos listar varios objetos tivessimos que listar todos os 100 atributos de cada objeto?
 // o DTO vai ser quem define quais atributos queremos mostrar
 
+import br.com.taurus.projeto.curso.carros.domain.Carro;
 import lombok.Data;
 import org.modelmapper.ModelMapper;//Ajuda a copiar os atributos de um objeto para outro
 
