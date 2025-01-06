@@ -1,4 +1,4 @@
-package br.com.taurus.projeto.curso.carros;
+package br.com.taurus.projeto.curso.carros.exception;
 
 
 import org.springframework.http.HttpStatus;

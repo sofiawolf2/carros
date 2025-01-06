@@ -1,6 +1,6 @@
 package br.com.taurus.projeto.curso.carros.service;
 
-import br.com.taurus.projeto.curso.carros.ObjectNotFoundException;
+import br.com.taurus.projeto.curso.carros.exception.ObjectNotFoundException;
 import br.com.taurus.projeto.curso.carros.domain.Carro;
 import br.com.taurus.projeto.curso.carros.domain.CarroDTO;
 import br.com.taurus.projeto.curso.carros.repository.CarroRepository;
