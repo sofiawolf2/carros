@@ -2,14 +2,12 @@ package br.com.taurus.projeto.curso.carros;
 
 import br.com.taurus.projeto.curso.carros.domain.Carro;
 import br.com.taurus.projeto.curso.carros.service.CarroService;
-import br.com.taurus.projeto.curso.carros.domain.CarroDTO;
+import br.com.taurus.projeto.curso.carros.domain.dto.CarroDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.Optional;
 
 import static junit.framework.TestCase.*;
 
