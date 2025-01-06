@@ -5,6 +5,7 @@ import br.com.taurus.projeto.curso.carros.service.CarroService;
 import br.com.taurus.projeto.curso.carros.domain.dto.CarroDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -43,12 +44,12 @@ public class CarrosController {
     }
 
 
-    @PostMapping
+    @PostMapping @Secured({"ROLE_ADMIN"})// estou definindo quem pode fazer essa chamada
     public ResponseEntity post(@RequestBody Carro carro){//@RequestBody converte o JSON do cavalo para o objeto carro
         carroService.insert(carro);
         URI location = geturi(carro.getId());
 
-        return ResponseEntity.badRequest().build();// http status 400
+        return ResponseEntity.ok().build();
     }
 
     private URI geturi (Long id){
@@ -76,6 +77,7 @@ public class CarrosController {
         carroService.delete(id);
         return ResponseEntity.ok().build();
     }
+
 
 
 }

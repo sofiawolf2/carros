@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.nio.file.AccessDeniedException;
+
 @RestControllerAdvice// permite que tratar exceções de maneira global, na aplicação inteira
 public class ExceptionConfg extends ResponseEntityExceptionHandler {
 
@@ -28,5 +30,13 @@ public class ExceptionConfg extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         return new ResponseEntity<>("Operação não permitida", HttpStatus.METHOD_NOT_ALLOWED);
     }
+
+    /*
+    @ExceptionHandler({AccessDeniedException.class})
+    public ResponseEntity accesDenied( Exception ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    }
+    Não esta fazendo diferença
+     */
 
 }
