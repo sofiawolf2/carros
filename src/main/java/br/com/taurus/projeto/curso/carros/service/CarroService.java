@@ -2,7 +2,7 @@ package br.com.taurus.projeto.curso.carros.service;
 
 import br.com.taurus.projeto.curso.carros.exception.ObjectNotFoundException;
 import br.com.taurus.projeto.curso.carros.domain.Carro;
-import br.com.taurus.projeto.curso.carros.domain.CarroDTO;
+import br.com.taurus.projeto.curso.carros.domain.dto.CarroDTO;
 import br.com.taurus.projeto.curso.carros.repository.CarroRepository;
 import org.modelmapper.internal.util.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
