@@ -19,6 +19,7 @@ public class CarrosServiceTest {
     @Autowired
     private CarroService service;
 
+
     @Test
     public void teste(){
         Carro c = new Carro();
@@ -28,16 +29,21 @@ public class CarrosServiceTest {
         assertNotNull(c2);
         Long id = c.getId();
         assertNotNull(id);
-        Optional<CarroDTO> op = service.getCarroById(id);
-        assertTrue(op.isPresent());
-        c2 = op.get();
+
+        c2 = service.getCarroById(id);
+        assertNotNull(c2);
+
         assertEquals(c.getNome(),c2.getNome());
         assertEquals(c.getTipo(), c2.getTipo());
 
         service.delete(id);
 
         // veficicar se realmente apagou:
-        assertFalse(service.getCarroById(id).isPresent());
+        try {
+            assertNull(service.getCarroById(id)); // como o carro não existe, o metodo dentro do servoce vai lançar uma exceção
+        } catch (Exception e) { // aqui estamos apenas dizendo q se lançar exceção n faça nada (ta correto)
+            //ok
+        }
     }
 
 
@@ -50,6 +56,13 @@ public class CarrosServiceTest {
     @Test
     public void testeListas(){
 
+    }
+
+    @Test
+    public void testGet(){
+        CarroDTO c = service.getCarroById(11L);
+        assertNotNull(c);
+        assertEquals("Ferrari FF", c.getNome());
     }
 
 }

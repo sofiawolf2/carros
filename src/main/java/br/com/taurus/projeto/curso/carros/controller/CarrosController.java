@@ -31,13 +31,9 @@ public class CarrosController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity getById(@PathVariable("id") Long id){ //aqui não colocamos que o ResponseEntity é do tipo Optional<Carro> pois pode ser que não retorne um carro. Pode ser que retorne apenas um erro. No caso um Renponse Entity
-        Optional<CarroDTO> carro = carroService.getCarroById(id);
-        if (carro.isPresent()){
-            return ResponseEntity.ok(carro.get()); // o paratro poderia ser direto carroService.getCarroById(id) mas separamos para poder verificar antes se existe. Pois o Optional aceita null
-        }else{
-            return ResponseEntity.notFound().build(); // no caso de ok tambem deveriamos colocar o .build() mas como estamos colocando um parametro dentro, não precisa
-        }// no caso de notFound não queremos que retorne nem sequer null. deve retornar nada e um erro. apenas. 404
+    public ResponseEntity getById(@PathVariable("id") Long id){
+        CarroDTO carro = carroService.getCarroById(id); //Não preciso mais fazer a verificação se existe então não é mais necessario o uso de optional
+        return ResponseEntity.ok(carro);
     }
 
     @GetMapping("/tipo/{tipo}")
@@ -50,15 +46,10 @@ public class CarrosController {
 
     @PostMapping
     public ResponseEntity post(@RequestBody Carro carro){//@RequestBody converte o JSON do cavalo para o objeto carro
-        try{
-            carroService.insert(carro);
-            URI location = geturi(carro.getId());
-            return ResponseEntity.created(location).build(); // http status 201. Indica que um novo recurso foi criado com sucesso (nova localização é a prova)
-            // não é obrigatorio inserir a nova localizao, pode so colocar um null
-        }catch (Exception e){
-            return ResponseEntity.badRequest().build();// http status 400
-            //indica que a requisição não foi processada devido a um problema, como um objeto malformado ou uma falha na persistência
-        }
+        carroService.insert(carro);
+        URI location = geturi(carro.getId());
+
+        return ResponseEntity.badRequest().build();// http status 400
     }
 
     private URI geturi (Long id){
