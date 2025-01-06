@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestControllerAdvice// permite que tratar exceções de maneira global, na aplicação inteira
@@ -22,12 +23,10 @@ public class ExceptionConfg extends ResponseEntityExceptionHandler {
     public ResponseEntity errorBadRequest (Exception ex){
         return ResponseEntity.badRequest().build();
     }
-    /*
+
     @Override
-    protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex, HttpHeaders headers){
+    protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         return new ResponseEntity<>("Operação não permitida", HttpStatus.METHOD_NOT_ALLOWED);
     }
-    erro: java: method does not override or implement a method from a supertype
 
-     */
 }
