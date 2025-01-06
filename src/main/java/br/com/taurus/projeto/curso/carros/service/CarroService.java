@@ -1,9 +1,9 @@
 package br.com.taurus.projeto.curso.carros.service;
 
+import br.com.taurus.projeto.curso.carros.ObjectNotFoundException;
 import br.com.taurus.projeto.curso.carros.domain.Carro;
 import br.com.taurus.projeto.curso.carros.domain.CarroDTO;
 import br.com.taurus.projeto.curso.carros.repository.CarroRepository;
-import org.hibernate.ObjectNotFoundException;
 import org.modelmapper.internal.util.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class CarroService {
 
     public CarroDTO getCarroById(Long id){
         Optional<Carro> carro = carroRepository.findById(id);
-        return carro.map(CarroDTO::create).orElse(()-> new ObjectNotFoundException("Carro não encontrado"));
+        return carro.map(CarroDTO::create).orElseThrow(()-> new ObjectNotFoundException("Carro não encontrado"));
         // No ObjectNotFoundException o spring boot vai automaticamente converter para resposta de status notfound.
     }
 
