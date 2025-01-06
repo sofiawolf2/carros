@@ -55,3 +55,23 @@ insert into carro (nome,descricao,url_foto,url_video,latitude,longitude,tipo) VA
 select count(*) from carro;
 
 select id,nome,tipo from carro;
+
+create table user (
+   	id serial not null primary key,
+    email varchar(255),
+    login varchar(255),
+    nome varchar(255),
+    senha varchar(255),
+);
+
+
+
+
+
+
+
+
+
+
+
+
