@@ -1,13 +1,11 @@
 package br.com.taurus.projeto.curso.carros.domain;
 
-
 import lombok.Data;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import javax.persistence.*;
+import java.util.List;
 
 @Entity @Data
-@Table(name = "usuario") // não foi possivel salvar a tabela com o mesmo nome pois no postgresql user é um nome reservado
 public class User {
 
     @Id
@@ -17,6 +15,13 @@ public class User {
     private String login;
     private String senha;
     private String email;
+
+    @ManyToMany(fetch =  FetchType.EAGER)
+    @JoinTable(name = "user_roles",
+        joinColumns = @JoinColumn (name = "user_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private List<Role> roles;
+
 
     public static void main (String[] args){
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();

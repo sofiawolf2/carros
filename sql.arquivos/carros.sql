@@ -56,13 +56,26 @@ select count(*) from carro;
 
 select id,nome,tipo from carro;
 
-create table user (
+create table "user"( -- user é uma palavra reservada. precisa escrever dessa forma para salvar como nome
    	id serial not null primary key,
     email varchar(255),
     login varchar(255),
     nome varchar(255),
-    senha varchar(255),
+    senha varchar(255)
 );
+
+insert into "user"(nome,email,login,senha) values ('Ricardo Lecheta','rlecheta@gmail.com','rl','$2a$10$HKveMsPlst41Ie2LQgpijO691lUtZ8cLfcliAO1DD9TtZxEpaEoJe');
+insert into "user"(nome,email,login,senha) values ('Sofia Queiroz','sofia@gmail.com','sofia','$2a$10$OdOUNnnRJXD7jqtKyopneeNCJ/h4tn3l6Ls7zZvPFcqGOMn2nKWbG');
+
+select * from "user";
+select * from role;
+select * from user_roles;
+
+insert into role(id,nome) values (1, 'ROLE_USER');
+insert into role(id,nome) values (2, 'ROLE_ADMIN');
+
+insert into user_roles(user_id,role_id) values(1, 1);
+insert into user_roles(user_id,role_id) values(2, 2);
 
 
 

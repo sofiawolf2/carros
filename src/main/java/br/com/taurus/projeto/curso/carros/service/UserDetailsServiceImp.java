@@ -24,6 +24,6 @@ public class UserDetailsServiceImp implements UserDetailsService {
             throw new UsernameNotFoundException("Usuário não encontrado");
         }
         return User.withUsername(username).password(user.getSenha()).roles("USER").build();
-              
+
     }
 }
