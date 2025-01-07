@@ -64,8 +64,8 @@ create table "user"( -- user é uma palavra reservada. precisa escrever dessa fo
     senha varchar(255)
 );
 
-insert into "user"(nome,email,login,senha) values ('Ricardo Lecheta','rlecheta@gmail.com','rl','$2a$10$HKveMsPlst41Ie2LQgpijO691lUtZ8cLfcliAO1DD9TtZxEpaEoJe');
-insert into "user"(nome,email,login,senha) values ('Sofia Queiroz','sofia@gmail.com','sofia','$2a$10$OdOUNnnRJXD7jqtKyopneeNCJ/h4tn3l6Ls7zZvPFcqGOMn2nKWbG');
+insert into "user"(nome,email,login,senha) values ('Ricardo Lecheta','rlecheta@gmail.com','rl','$2a$10$epKo8PwP1LP2GGVorIWgRu/Wuotbr4fRDILL2dfjwHAT/cajIpEi.');
+insert into "user"(nome,email,login,senha) values ('Sofia Queiroz','sofia@gmail.com','sofia','$2a$10$epKo8PwP1LP2GGVorIWgRu/Wuotbr4fRDILL2dfjwHAT/cajIpEi.');
 
 select * from "user";
 select * from role;
