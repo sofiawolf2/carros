@@ -78,6 +78,16 @@ insert into user_roles(user_id,role_id) values(1, 1);
 insert into user_roles(user_id,role_id) values(2, 2);
 
 
+alter table user_roles
+   add constraint FK_user_roles_role
+   foreign key (role_id)
+   references role (id);
+
+alter table user_roles
+   add constraint FK_user_roles_user
+   foreign key (user_id)
+   references "user" (id);
+
 
 
 
