@@ -1,12 +1,11 @@
 package br.com.taurus.projeto.curso.carros.service;
 
+import br.com.taurus.projeto.curso.carros.domain.User;
 import br.com.taurus.projeto.curso.carros.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 //imp: implementação
@@ -18,12 +17,16 @@ public class UserDetailsServiceImp implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // não usa mais o BCryptPasswordEncoder pois agora a senha ja é colocada criptografada direto no banco
-        br.com.taurus.projeto.curso.carros.domain.User user = userRepository.findByLogin(username);
-        // temos 2 user sendo trabalhados: o que criamos e o do spring. para diferenciar mudamos a escrita para essa em que define o pacote
+        User user = userRepository.findByLogin(username);
         if (user == null){
+            teste();
             throw new UsernameNotFoundException("Usuário não encontrado");
         }
-        return User.withUsername(username).password(user.getSenha()).roles("USER").build();
+        return user; // por user (da classe User) implementar UserDetails pode retornar so ele
 
+    }
+
+    public String teste(){
+        return "Chegou aqui";
     }
 }
