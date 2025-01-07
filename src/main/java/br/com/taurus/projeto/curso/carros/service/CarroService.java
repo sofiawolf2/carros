@@ -15,11 +15,11 @@ import java.util.stream.Collectors;
 @Service
 public class CarroService {
 
-    @Autowired // o spring vai injetar essa dependencia automaticamente. nao criaremos um new. p spring vai fazer
+    @Autowired
     private CarroRepository carroRepository;
 
     public List<CarroDTO> getCarros(){
-       return carroRepository.findAll().stream().map(CarroDTO::create).collect(Collectors.toList());// ele chama a função create da classe CarroDTO
+       return carroRepository.findAll().stream().map(CarroDTO::create).collect(Collectors.toList());
     }
     public List<CarroDTO> getCarrosByTipo(String tipo){
         return carroRepository.findByTipo(tipo).stream().map(CarroDTO::create).collect(Collectors.toList());
@@ -28,24 +28,22 @@ public class CarroService {
     public CarroDTO getCarroById(Long id){
         Optional<Carro> carro = carroRepository.findById(id);
         return carro.map(CarroDTO::create).orElseThrow(()-> new ObjectNotFoundException("Carro não encontrado"));
-        // No ObjectNotFoundException o spring boot vai automaticamente converter para resposta de status notfound.
     }
 
     public CarroDTO insert(Carro carro) {
         Assert.isNull(carro.getId(), "Não foi possivel atualizar o registro");
         return CarroDTO.create(carroRepository.save(carro));
-    } // save ja existe e retorna o objeto
+    }
 
 
     public CarroDTO update(Carro carro, Long id){
-        Assert.notNull(id,"ID inválido. Não foi possivel atualizar o registro"); // verifica se o id é nulo
+        Assert.notNull(id,"ID inválido. Não foi possivel atualizar o registro"); // verifica se o id eh nulo
         Optional<Carro> desatualizado = carroRepository.findById(id);; // estou pegando o carro que quero modificar
         if (desatualizado.isPresent()){ // verifica se o carro existe
             Carro novoValor = desatualizado.get(); // retorna o carro, é uma função do optional
             novoValor.setNome(carro.getNome());
-           // novoValor.setTipo(carro.getTipo());
 
-            carroRepository.save(novoValor); //não é recomendavel salvar direto sem fazer esse processo pois nesses sistemas é comum objetos terem relacionamentos então se apagar e salvar por cima vai perder essas caracteristicas
+            carroRepository.save(novoValor); //noo eh recomendavel salvar direto sem fazer esse processo pois nesses sistemas é comum objetos terem relacionamentos então se apagar e salvar por cima vai perder essas caracteristicas
             return CarroDTO.create(novoValor);
         }else{ return null;}
     }

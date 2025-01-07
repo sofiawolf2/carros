@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+
 import static junit.framework.TestCase.*;
 
 @RunWith(SpringRunner.class)
@@ -44,16 +46,19 @@ public class CarrosServiceTest {
         }
     }
 
-
+    /*
     @Test
     public void contextLoads(){
         service.delete(31L);
 
     }
 
+     */
+
     @Test
     public void testeListas(){
-
+        List<CarroDTO> carros = service.getCarros();
+        assertEquals(30, carros.size());
     }
 
     @Test

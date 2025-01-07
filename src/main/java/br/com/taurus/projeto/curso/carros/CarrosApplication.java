@@ -14,3 +14,4 @@ public class CarrosApplication {
     }
 
 }
+//PS C:\Users\dev\Documents\SPRING_BOOT\carros> java -jar target/carros-1.0.0.jar
