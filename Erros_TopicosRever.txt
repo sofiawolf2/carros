@@ -1,0 +1,8 @@
+[] UserDetailsServiceImp.java | linha 22:
+   Mensagem do UsernameNotFoundException não aparece.
+
+[] ExceptionConfg.java | linha 34+
+   @ExceptionHandler({AccessDeniedException.class}) não faz diferença.
+
+[] User.java | linha 32:
+   BCryptPasswordEncoder está gerando senhas diferentes todas as vezes e não está reconhecendo todas elas.
