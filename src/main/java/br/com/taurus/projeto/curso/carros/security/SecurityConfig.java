@@ -33,7 +33,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(); // responsavel por criptogravar as senhas de maneira segura
         auth.userDetailsService(userDetailsService).passwordEncoder(encoder);
-
         /*
         auth
                 .inMemoryAuthentication().passwordEncoder(encoder)

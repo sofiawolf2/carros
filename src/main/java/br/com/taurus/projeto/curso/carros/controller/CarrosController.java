@@ -49,7 +49,7 @@ public class CarrosController {
         carroService.insert(carro);
         URI location = geturi(carro.getId());
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.created(location).build();
     }
 
     private URI geturi (Long id){

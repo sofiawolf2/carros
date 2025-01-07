@@ -27,11 +27,11 @@ public class CarroAPITest {
     protected TestRestTemplate rest;
 
     private ResponseEntity<CarroDTO> getCarro(String url){
-        return rest.getForEntity(url, CarroDTO.class); // realiza uma solicitação http atravez de uma url e o tipo da classe usada
+        return rest.withBasicAuth("sofia", "123").getForEntity(url, CarroDTO.class); // realiza uma solicitação http atravez de uma url e o tipo da classe usada
     }
 
     private ResponseEntity<List<CarroDTO>> getListaCarros( String url){
-        return rest.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<CarroDTO>>() {// exchange: como o outro mas mais flexivel, tem mais variedade de entradas
+        return rest.withBasicAuth("sofia", "123").exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<CarroDTO>>() {// exchange: como o outro mas mais flexivel, tem mais variedade de entradas
             //^estamos criando e retornando uma lista baseado no retorno de pesquisa do tipo get (httpMethod.GET) na url que foi enviada de parametro
         });
     }
@@ -75,7 +75,7 @@ public class CarroAPITest {
         carro.setTipo("classicos");
 
         //insert
-        ResponseEntity response = rest.postForEntity("/api/v1/carros", carro, null);// fazer um post enviando a url, o objeto e o tipo de retorno como parametro
+        ResponseEntity response = rest.withBasicAuth("sofia", "123").postForEntity("/api/v1/carros", carro, null);// fazer um post enviando a url, o objeto e o tipo de retorno como parametro
         System.out.println(response);
 
         // verificando se foi criado
@@ -89,7 +89,7 @@ public class CarroAPITest {
         assertEquals("classicos", c.getTipo());
 
         // deletar o objeto
-        rest.delete(location);
+        rest.withBasicAuth("sofia", "123").delete(location);
 
         //verificar se deletou
         assertEquals(HttpStatus.NOT_FOUND, getCarro(location).getStatusCode());

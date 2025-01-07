@@ -19,14 +19,9 @@ public class UserDetailsServiceImp implements UserDetailsService {
         // não usa mais o BCryptPasswordEncoder pois agora a senha ja é colocada criptografada direto no banco
         User user = userRepository.findByLogin(username);
         if (user == null){
-            teste();
-            throw new UsernameNotFoundException("Usuário não encontrado");
+            throw new UsernameNotFoundException("Usuário não encontrado"); // Não vejo a mensagem
         }
         return user; // por user (da classe User) implementar UserDetails pode retornar so ele
 
-    }
-
-    public String teste(){
-        return "Chegou aqui";
     }
 }

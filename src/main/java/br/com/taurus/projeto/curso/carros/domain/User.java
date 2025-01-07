@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity @Data
-@Table(name="`user`") // user é uma palavra reservada então deve ser escrito dessa maneira. Não é bom criar a tabela pelo postgresql pq la é necessario criar usando "user" como nome e isso atrabalha a classe identificar qual tabela ela pertence
+@Table(name="`user`") // user é uma palavra reservada no postgresql então deve ser escrito dessa maneira. Não é bom criar a tabela pelo postgresql pq la é necessario criar usando "user" como nome e isso atrabalha a classe identificar qual tabela ela pertence
 public class User implements UserDetails {
 
     @Id
@@ -30,7 +30,7 @@ public class User implements UserDetails {
     public static void main (String[] args){
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         System.out.println(encoder.encode("123"));//esta gerando uma senha diferente todas as vezes e não reconhece todas as senhas. rever isso
-        // 123: $2a$10$epKo8PwP1LP2GGVorIWgRu/Wuotbr4fRDILL2dfjwHAT/cajIpEi.
+        // 123: $2a$10$epKo8PwP1LP2GGVorIWgRu/Wuotbr4fRDILL2dfjwHAT/cajIpEi.  esta reconhecendo
     }
 
     @Override
