@@ -1,12 +1,17 @@
 package br.com.taurus.projeto.curso.carros.domain.dto;
 
+import br.com.taurus.projeto.curso.carros.domain.Role;
 import br.com.taurus.projeto.curso.carros.domain.User;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.modelmapper.ModelMapper;
 
-@Data
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Data @JsonInclude (JsonInclude.Include.NON_NULL)// so gera o json de campos que não estiverem nulos. Então se tiver um user com o token nulo ele não vai mostrar
 public class UserDTO {
     private String login;
     private String nome;
@@ -15,15 +20,24 @@ public class UserDTO {
     // token jwt
     private String token;
 
-    public static UserDTO create(User user, String token) {
+    private List<String> roles;
+
+    public static UserDTO create(User user) { //transforma um User em UserDTO
         ModelMapper modelMapper = new ModelMapper();
         UserDTO dto = modelMapper.map(user, UserDTO.class);
+        dto.roles = user.getRoles().stream().map(Role::getNome).collect(Collectors.toList());
+        //da chamada user.getRoles() vem um objeto e não uma lista, estamos usado o map para mapear e criar uma lista;
+        return dto;
+    }
+    public static UserDTO create(User user, String token) {
+        UserDTO dto = create(user);
         dto.token = token;
         return dto;
     }
 
+
     public String toJson() throws JsonProcessingException {
         ObjectMapper m = new ObjectMapper();
-        return m.writeValueAsString(this);
+        return m.writeValueAsString(this);// converte para json
     }
 }

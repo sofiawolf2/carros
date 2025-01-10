@@ -11,8 +11,4 @@ public class IndexController {
     @GetMapping()
     public String get(){return "API dos carros";}
 
-    @GetMapping("/userinfo")
-    public UserDetails userinfo (@AuthenticationPrincipal UserDetails user){
-        return user;
-    }
 }
