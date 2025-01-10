@@ -45,18 +45,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/api/v1/login").permitAll()
-                .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**")
-                .permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().authenticated() //qualquer request precisa estar autenticado
+                .antMatchers(HttpMethod.GET, "/api/v1/login").permitAll()// no login pode sem autenticar
                 .and().csrf().disable()
                 .addFilter(new JwtAuthenticationFilter(authManager))
                 .addFilter(new JwtAuthorizationFilter(authManager, userDetailsService))
                 .exceptionHandling()
                 .accessDeniedHandler(accessDeniedHandler)
-                .authenticationEntryPoint(unauthorizedHandler)
+                .authenticationEntryPoint(unauthorizedHandler)//confg para retornar os erros de quando não esta autorizado
                 .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // desligando a criação de cookies na sessão
 
 
     }

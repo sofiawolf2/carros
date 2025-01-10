@@ -20,7 +20,8 @@ import static java.util.Objects.nonNull;
 public class JwtUtil {
     // Chave com algoritmo HS512
     // http://www.allkeysgenerator.com
-    private static final String JWT_SECRET = "n2r5u8x/A%D*G-KaPdSgVkYp3s6v9y$B&E(H+MbQeThWmZq4t7w!z%C*F-J@NcRf";
+    private static final String JWT_SECRET = "n2r5u8x/A%D*G-KaPdSgVkYp3s6v9y$B&E(H+MbQeThWmZq4t7w!z%C*F-J@NcRf";// chave randomica criada no site listado
+    //essa chave vai ser usada para a criptografia
 
     public static Claims getClaims(String token) {
         byte[] signingKey = JwtUtil.JWT_SECRET.getBytes();
@@ -33,9 +34,9 @@ public class JwtUtil {
     }
 
     public static String getLogin(String token) {
-        Claims claims = getClaims(token);
+        Claims claims = getClaims(token); //com as claims conseguimos recuperar informações do token
         if (!isNull(claims)) {
-            return claims.getSubject();
+            return claims.getSubject();//login
         }
         return null;
     }
@@ -46,18 +47,20 @@ public class JwtUtil {
             return null;
         }
         return ((List<?>) claims
-                .get("rol")).stream()
-                .map(authority -> new SimpleGrantedAuthority((String) authority))
+                .get("rol")).stream()// converte para stream para usar a função map
+                .map(authority -> new SimpleGrantedAuthority((String) authority)) //convertendo para uma lista de roles (do tipo grandteAuthority)
                 .collect(Collectors.toList());
+        //grantedAuthority são permissões para fazer algo
     }
 
     public static boolean isTokenValid(String token) {
-        Claims claims = getClaims(token);
+        Claims claims = getClaims(token);// chama as claims do tioken: ou seja suas credenciais
         if (nonNull(claims)) {
-            String login = claims.getSubject();
+            String login = claims.getSubject();//login
             Date expiration = claims.getExpiration();
             Date now = new Date(System.currentTimeMillis());
             return login != null && expiration != null && now.before(expiration);
+            // verifica se o login não é nulo e se ainda não expirou o token
         }
         return false;
     }
@@ -68,14 +71,14 @@ public class JwtUtil {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
-        byte[] signingKey = JwtUtil.JWT_SECRET.getBytes();
+        byte[] signingKey = JwtUtil.JWT_SECRET.getBytes();// pegamos os bytes da chave de criptografia
 
-        int days = 10;
+        int days = 10;// o token vai durar 10 dias
         long time = days * 24 /*horas*/ * 60 /*min*/ * 60 /*seg*/ * 1000  /*milis*/;
-        Date expiration = new Date(System.currentTimeMillis() + time);
+        Date expiration = new Date(System.currentTimeMillis() + time);// criando data de validade
 //        System.out.println(expiration);
 
-        return Jwts.builder()
+        return Jwts.builder()// chamando a api do jaison web token
                 .signWith(Keys.hmacShaKeyFor(signingKey), SignatureAlgorithm.HS512)
                 .setSubject(user.getUsername())
                 .setExpiration(expiration)
