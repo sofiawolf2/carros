@@ -1,9 +1,13 @@
 [] UserDetailsServiceImp.java | linha 22:
    Mensagem do UsernameNotFoundException não aparece.
 
-[] ExceptionConfg.java | linha 34+
+
+[x] ExceptionConfg.java | linha 34+
    @ExceptionHandler({AccessDeniedException.class}) não faz diferença.
+	Agora com o novo sistema de autenticação jwt, o STATUS FORBIDDEN esta sendo tratado e esta funcionando corretamente. 
+	Não há necessidade de estudar de novo esse caso nesse arquivo.
 
 [x] User.java | linha 32:
    BCryptPasswordEncoder está gerando senhas diferentes todas as vezes e não está reconhecendo todas elas.
-	Provavelmente era outra coisa e achei que não estava reconhecendo. no momento esta funcionando e ao estudar sobre vi que é normal ele 	gerar varias senhas diferentes mas todas são validas. Tem relação com a forma que ele criptografa. 
+	Provavelmente era outra coisa e achei que não estava reconhecendo. no momento esta funcionando e ao estudar sobre vi que é normal ele 
+	gerar varias senhas diferentes mas todas são validas. Tem relação com a forma que ele criptografa. 
