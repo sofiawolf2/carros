@@ -29,8 +29,7 @@ public class User implements UserDetails {
 
     public static void main (String[] args){
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        System.out.println(encoder.encode("123"));//esta gerando uma senha diferente todas as vezes e não reconhece todas as senhas. rever isso
-        // 123: $2a$10$epKo8PwP1LP2GGVorIWgRu/Wuotbr4fRDILL2dfjwHAT/cajIpEi.  esta reconhecendo
+        System.out.println(encoder.encode("123"));
     }
 
     @Override

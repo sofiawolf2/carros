@@ -4,5 +4,6 @@
 [] ExceptionConfg.java | linha 34+
    @ExceptionHandler({AccessDeniedException.class}) não faz diferença.
 
-[] User.java | linha 32:
+[x] User.java | linha 32:
    BCryptPasswordEncoder está gerando senhas diferentes todas as vezes e não está reconhecendo todas elas.
+	Provavelmente era outra coisa e achei que não estava reconhecendo. no momento esta funcionando e ao estudar sobre vi que é normal ele 	gerar varias senhas diferentes mas todas são validas. Tem relação com a forma que ele criptografa. 
