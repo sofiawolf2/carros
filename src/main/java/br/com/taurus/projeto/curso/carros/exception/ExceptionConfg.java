@@ -36,7 +36,6 @@ public class ExceptionConfg extends ResponseEntityExceptionHandler {
     public ResponseEntity accesDenied( Exception ex) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
-    Não esta fazendo diferença
      */
 
 }
