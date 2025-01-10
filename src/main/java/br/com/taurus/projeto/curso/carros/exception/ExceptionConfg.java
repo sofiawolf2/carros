@@ -36,6 +36,7 @@ public class ExceptionConfg extends ResponseEntityExceptionHandler {
     public ResponseEntity accesDenied( Exception ex) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
+    se deixar esse trecho sem comentário, o spring virá primeiro para esse metodo. (este erro esta em tratamento no pacote headers de jwt)
      */
 
 }

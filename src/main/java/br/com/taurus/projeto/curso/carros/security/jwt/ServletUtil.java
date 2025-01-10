@@ -19,7 +19,7 @@ public class ServletUtil {
     }
 
     public static String getJson(String key, String value) {
-        JsonObject json = new JsonObject();
+        JsonObject json = new JsonObject();// Outra forma de tranformar em json. Em vez de usar um objeto qualquer para isso, pode usar o proprio objeto do json
         json.addProperty(key, value);
         return json.toString();
     }

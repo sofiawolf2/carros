@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+//Essa é a classe q controla o login. Ela que vai receber o jason com usuario e senha e vai retornar o userDTO juntamente com o token
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     public static final String AUTH_URL = "/api/v1/login";
@@ -28,7 +29,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         this.authenticationManager = authenticationManager;
 
         // api/authenticate
-        setFilterProcessesUrl(AUTH_URL);
+        setFilterProcessesUrl(AUTH_URL);//aqui definimos que essa url vai ser a responsavel pelo endpoit de login
     }
 
     @Override
@@ -44,9 +45,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 throw new BadCredentialsException("Invalid username/password.");
             }
 
-            Authentication auth = new UsernamePasswordAuthenticationToken(username, password);
+            Authentication auth = new UsernamePasswordAuthenticationToken(username, password);// essa classe é do proprio spring
 
-            return authenticationManager.authenticate(auth);
+            return authenticationManager.authenticate(auth);// objetivo de usar o AuthenticationManager é chamar esse metodo
         } catch (IOException e) {
             throw new BadCredentialsException(e.getMessage());
         }
@@ -60,7 +61,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String jwtToken = JwtUtil.createToken(user);
 
 //        String json = ServletUtil.getJson("token", jwtToken);
-        String json = UserDTO.create(user, jwtToken).toJson();
+        String json = UserDTO.create(user, jwtToken).toJson();//no caso de segurança é recomendado trabalhar com json e não retornar um objeto que vai ser transformado sozinho em json como fazemos nos arquivos controllers
         ServletUtil.write(response, HttpStatus.OK, json);
     }
 

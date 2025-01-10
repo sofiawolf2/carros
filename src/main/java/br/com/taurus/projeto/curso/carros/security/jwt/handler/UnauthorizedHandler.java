@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+//Todas as exeções lançadas no processo de autorizar vao cair aqui
 @Component
 public class UnauthorizedHandler implements AuthenticationEntryPoint {
     private static Logger logger = LoggerFactory.getLogger(UnauthorizedHandler.class);
