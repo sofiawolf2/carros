@@ -2,38 +2,33 @@ package br.com.taurus.projeto.curso.carros;
 
 import br.com.taurus.projeto.curso.carros.domain.Carro;
 import br.com.taurus.projeto.curso.carros.domain.dto.CarroDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
-import static junit.framework.TestCase.*;
 
-import java.util.*;
+import java.util.List;
+
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertNotNull;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = CarrosApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT) // web etc: da definindo que a porta de entrada é aleatoria
-//CarrosApplication.class : idefine a classe que vai ser usada no teste
+@SpringBootTest(classes = CarrosApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class CarrosAPITest extends BaseAPITest {
 
-public class CarroAPITest {
+    private ResponseEntity<CarroDTO> getCarro(String url) {return get(url, CarroDTO.class);} //dentro chama o get da classe mae
 
-    @Autowired
-    protected TestRestTemplate rest;
+    private ResponseEntity<List<CarroDTO>> getListaCarros(String url) {
+        HttpHeaders headers = getHeaders();
 
-    private ResponseEntity<CarroDTO> getCarro(String url){
-        return rest.withBasicAuth("sofia", "123").getForEntity(url, CarroDTO.class); // realiza uma solicitação http atravez de uma url e o tipo da classe usada
-    }
-
-    private ResponseEntity<List<CarroDTO>> getListaCarros( String url){
-        return rest.withBasicAuth("sofia", "123").exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<CarroDTO>>() {// exchange: como o outro mas mais flexivel, tem mais variedade de entradas
-            //^estamos criando e retornando uma lista baseado no retorno de pesquisa do tipo get (httpMethod.GET) na url que foi enviada de parametro
-        });
+        return rest.exchange(
+                url,
+                HttpMethod.GET,
+                new HttpEntity<>(headers), //´passando os headers com o parametro autozizado
+                new ParameterizedTypeReference<List<CarroDTO>>() {
+                });
     }
 
     @Test
@@ -75,7 +70,7 @@ public class CarroAPITest {
         carro.setTipo("classicos");
 
         //insert
-        ResponseEntity response = rest.withBasicAuth("sofia", "123").postForEntity("/api/v1/carros", carro, null);// fazer um post enviando a url, o objeto e o tipo de retorno como parametro
+        ResponseEntity response = post("/api/v1/carros", carro, null);// fazer um post enviando a url, o objeto e o tipo de retorno como parametro
         System.out.println(response);
 
         // verificando se foi criado
@@ -89,11 +84,9 @@ public class CarroAPITest {
         assertEquals("classicos", c.getTipo());
 
         // deletar o objeto
-        rest.withBasicAuth("sofia", "123").delete(location);
+        delete(location,null);
 
         //verificar se deletou
         assertEquals(HttpStatus.NOT_FOUND, getCarro(location).getStatusCode());
     }
-
 }
-

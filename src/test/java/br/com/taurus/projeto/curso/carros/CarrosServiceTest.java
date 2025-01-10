@@ -1,5 +1,6 @@
 package br.com.taurus.projeto.curso.carros;
 
+import br.com.taurus.projeto.curso.carros.exception.ObjectNotFoundException;
 import br.com.taurus.projeto.curso.carros.domain.Carro;
 import br.com.taurus.projeto.curso.carros.service.CarroService;
 import br.com.taurus.projeto.curso.carros.domain.dto.CarroDTO;
@@ -16,56 +17,69 @@ import static junit.framework.TestCase.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class CarrosServiceTest {
+
     @Autowired
     private CarroService service;
 
-
     @Test
-    public void teste(){
-        Carro c = new Carro();
-        c.setNome("Aviao");
-        c.setTipo("voador");
-        CarroDTO c2 = service.insert(c);
-        assertNotNull(c2);
+    public void testSave() {
+
+        Carro carro = new Carro();
+        carro.setNome("Porshe");
+        carro.setTipo("esportivos");
+
+        CarroDTO c = service.insert(carro);
+
+        assertNotNull(c);
+
         Long id = c.getId();
         assertNotNull(id);
 
-        c2 = service.getCarroById(id);
-        assertNotNull(c2);
+        // Buscar o objeto
+        c = service.getCarroById(id);
+        assertNotNull(c);
 
-        assertEquals(c.getNome(),c2.getNome());
-        assertEquals(c.getTipo(), c2.getTipo());
+        assertEquals("Porshe",c.getNome());
+        assertEquals("esportivos",c.getTipo());
 
+        // Deletar o objeto
         service.delete(id);
 
-        // veficicar se realmente apagou:
+        // Verificar se deletou
         try {
-            assertNull(service.getCarroById(id)); // como o carro não existe, o metodo dentro do servoce vai lançar uma exceção
-        } catch (Exception e) { // aqui estamos apenas dizendo q se lançar exceção n faça nada (ta correto)
-            //ok
+            service.getCarroById(id);
+            fail("O carro não foi excluído");
+        } catch (ObjectNotFoundException e) {
+            // OK
         }
     }
 
-    /*
     @Test
-    public void contextLoads(){
-        service.delete(31L);
+    public void testLista() {
 
-    }
-
-     */
-
-    @Test
-    public void testeListas(){
         List<CarroDTO> carros = service.getCarros();
+
         assertEquals(30, carros.size());
     }
 
     @Test
-    public void testGet(){
-        CarroDTO c = service.getCarroById(11L);
-        assertNotNull(c);
-        assertEquals("Ferrari FF", c.getNome());
+    public void testListaPorTipo() {
+
+        assertEquals(10, service.getCarrosByTipo("classicos").size());
+        assertEquals(10, service.getCarrosByTipo("esportivos").size());
+        assertEquals(10, service.getCarrosByTipo("luxo").size());
+
+        assertEquals(0, service.getCarrosByTipo("x").size());
     }
 
+    @Test
+    public void testGet() {
+
+        CarroDTO c = service.getCarroById(11L);
+
+        assertNotNull(c);
+
+
+        assertEquals("Ferrari FF", c.getNome());
+    }
 }
