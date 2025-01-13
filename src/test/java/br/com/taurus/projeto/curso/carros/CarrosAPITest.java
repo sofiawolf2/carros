@@ -35,7 +35,8 @@ public class CarrosAPITest extends BaseAPITest {
     public void testeList (){
         List<CarroDTO> carros = getListaCarros("/api/v1/carros").getBody();
         assertNotNull(carros);
-        assertEquals(30,carros.size()); // apenas verificando se tem exatamente 30 carros no banco de dados
+        assertEquals(10,carros.size()); // apenas verificando se retorna 10 carros da chamada.
+        //10 pois foi definido que deve voltar de 10 em 10 carros por pagina
     }
 
     @Test

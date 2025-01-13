@@ -6,6 +6,8 @@ import br.com.taurus.projeto.curso.carros.domain.dto.CarroDTO;
 import br.com.taurus.projeto.curso.carros.repository.CarroRepository;
 import org.modelmapper.internal.util.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,11 +20,11 @@ public class CarroService {
     @Autowired
     private CarroRepository carroRepository;
 
-    public List<CarroDTO> getCarros(){
-       return carroRepository.findAll().stream().map(CarroDTO::create).collect(Collectors.toList());
+    public List<CarroDTO> getCarros(Pageable pageable){// agora podemos definir quantos carros aparecem por vez
+       return carroRepository.findAll(pageable).stream().map(CarroDTO::create).collect(Collectors.toList());
     }
-    public List<CarroDTO> getCarrosByTipo(String tipo){
-        return carroRepository.findByTipo(tipo).stream().map(CarroDTO::create).collect(Collectors.toList());
+    public List<CarroDTO> getCarrosByTipo(String tipo,Pageable pageable){
+        return carroRepository.findByTipo(tipo,pageable).stream().map(CarroDTO::create).collect(Collectors.toList());
     }
 
     public CarroDTO getCarroById(Long id){
